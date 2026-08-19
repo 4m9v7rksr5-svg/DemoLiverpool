@@ -1,0 +1,28 @@
+<resources>
+    <string name="app_name">Mobile Technical Test</string>
+
+    <!-- PLP -->
+    <string name="plp_title">Productos</string>
+    <string name="sort_button_label">Ordenar por</string>
+    <string name="sort_dialog_title">Ordenar por</string>
+    <string name="sort_price_asc">Precio: menor a mayor</string>
+    <string name="sort_price_desc">Precio: mayor a menor</string>
+    <string name="sort_rating_asc">Rating: menor a mayor</string>
+    <string name="sort_rating_desc">Rating: mayor a menor</string>
+    <string name="state_loading">Cargando productos…</string>
+    <string name="state_error">Ocurrió un error al cargar los productos.</string>
+    <string name="state_empty">No hay productos para mostrar.</string>
+    <string name="action_retry">Reintentar</string>
+
+    <!-- PDP -->
+    <string name="pdp_title">Detalle del producto</string>
+    <string name="add_to_cart">ADD TO CART</string>
+    <string name="back_to_products">BACK TO PRODUCTS</string>
+    <string name="pdp_state_error">No se pudo cargar el producto.</string>
+
+    <!-- Content descriptions -->
+    <string name="content_desc_product_image">Imagen del producto</string>
+    <string name="content_desc_back_icon">Volver</string>
+    <string name="content_desc_sort_icon">Ordenar</string>
+    <string name="content_desc_cart_icon">Carrito</string>
+</resources>
