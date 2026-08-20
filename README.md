@@ -1,42 +1,42 @@
 # Android Mobile Developer Technical Test
 
-Tiempo sugerido: 1 hora
+Suggested time: 1 hour
 
-## Objetivo
+## Goal
 
-Construir el flujo **PLP (Product List Page) → PDP (Product Detail Page)** consumiendo la
+Build the **PLP (Product List Page) → PDP (Product Detail Page)** flow consuming the
 [Fake Store API](https://fakestoreapi.com/docs).
 
-## Qué ya viene resuelto en este proyecto base
+## What this base project already solves
 
-Este starter project elimina todo el trabajo mecánico de configuración para que puedas
-concentrarte en la parte funcional:
+This starter project removes all the mechanical setup work so you can focus on the
+functional part:
 
-* Configuración de Gradle (AGP, Kotlin, Compose, ViewBinding, Navigation Component).
-* Todas las dependencias necesarias ya agregadas y en versiones compatibles entre sí
-  (Retrofit, OkHttp, converter Gson, Coroutines, Lifecycle/ViewModel, RecyclerView, Coil,
+* Gradle configuration (AGP, Kotlin, Compose, ViewBinding, Navigation Component).
+* All required dependencies already added and in compatible versions with each other
+  (Retrofit, OkHttp, Gson converter, Coroutines, Lifecycle/ViewModel, RecyclerView, Coil,
   Material Components, Navigation Component).
-* `FakeStoreApi` con los endpoints `getProducts()` y `getProduct(id)`.
-* `ApiClient`, ya apuntando a `https://fakestoreapi.com/`.
-* DTOs completos: `ProductResponse` y `RatingResponse`.
-* Permiso de `INTERNET` en el `AndroidManifest.xml`.
-* `Theme`, colores y strings básicos.
-* `MainActivity`, ya alojando el `NavHostFragment`.
-* Navigation Component configurado, con el grafo `PLP → PDP` y el argumento `productId`
-  ya declarado.
-* `ProductListFragment` y `ProductDetailFragment` creados, con su XML base.
-* `RecyclerView` agregado al layout del PLP, con `item_product.xml` como Product Card.
-* `ComposeView` integrado en el PLP (Compose dentro de una pantalla con Views tradicionales).
-* `ProductAdapter` y los `ViewModel` creados como skeleton.
-* `ProductRepository` creado como skeleton.
-* Placeholders/íconos básicos (back, sort, carrito, imagen de producto).
+* `FakeStoreApi` with the `getProducts()` and `getProduct(id)` endpoints.
+* `ApiClient`, already pointing to `https://fakestoreapi.com/`.
+* Complete DTOs: `ProductResponse` and `RatingResponse`.
+* `INTERNET` permission in `AndroidManifest.xml`.
+* Base `Theme`, colors and strings.
+* `MainActivity`, already hosting the `NavHostFragment`.
+* Navigation Component configured, with the `PLP → PDP` graph and the `productId`
+  argument already declared.
+* `ProductListFragment` and `ProductDetailFragment` created, with their base XML.
+* `RecyclerView` added to the PLP layout, with `item_product.xml` as the Product Card.
+* `ComposeView` integrated into the PLP (Compose inside a traditional Views screen).
+* `ProductAdapter` and the `ViewModel`s created as skeletons.
+* `ProductRepository` created as a skeleton.
+* Basic placeholders/icons (back, sort, cart, product image).
 
-No necesitas tocar Gradle, agregar dependencias, configurar Retrofit, Navigation ni crear
-la estructura del proyecto: todo eso ya está listo.
+You don't need to touch Gradle, add dependencies, configure Retrofit, Navigation, or
+create the project structure: all of that is already in place.
 
-## Tu implementación comienza aquí
+## Your implementation starts here
 
-Debes completar la lógica funcional en los siguientes archivos:
+You need to complete the functional logic in the following files:
 
 * `repository/ProductRepository.kt`
 * `ui/plp/ProductListViewModel.kt`
@@ -46,54 +46,53 @@ Debes completar la lógica funcional en los siguientes archivos:
 * `ui/pdp/ProductDetailViewModel.kt`
 * `ui/pdp/ProductDetailFragment.kt`
 
-### Qué se espera que implementes
+### What you're expected to implement
 
-* **`ProductRepository`**: llamada al API a través de `FakeStoreApi`, mapping de
-  `ProductResponse` → `Product` (dominio) y manejo básico de errores.
-* **`ProductListViewModel`**: carga de productos, exposición de un estado de UI
-  (loading / success / empty / error, por ejemplo con `StateFlow`) y aplicación del
-  ordenamiento seleccionado.
-* **`ProductListFragment`**: observar el estado del ViewModel y reflejarlo en la UI
-  (RecyclerView, ProgressBar, estados de error/vacío), y navegar al PDP al seleccionar
-  un producto.
-* **`ProductAdapter`**: `onBindViewHolder`, binding de datos en la Product Card y carga
-  de imagen con Coil.
-* **`ProductSortCompose`**: UI de selección de ordenamiento (por ejemplo un
-  `ModalBottomSheet`) con las 4 opciones definidas en `SortOption`, e invocar
-  `onSortSelected`.
-* **`ProductDetailViewModel`**: obtener el `productId` recibido por Navigation Component,
-  consultar el detalle del producto y exponer el estado de UI (loading / success / error).
-* **`ProductDetailFragment`**: observar el estado del ViewModel y pintar la UI del PDP
-  (imagen, título, rating, precio, descripción), además de resolver la navegación de
-  `BACK TO PRODUCTS` de vuelta al PLP.
+* **`ProductRepository`**: call the API through `FakeStoreApi`, map
+  `ProductResponse` → `Product` (domain), and handle basic errors.
+* **`ProductListViewModel`**: load products, expose a UI state
+  (loading / success / empty / error, e.g. with `StateFlow`), and apply the
+  selected sort order.
+* **`ProductListFragment`**: observe the ViewModel state and reflect it in the UI
+  (RecyclerView, ProgressBar, error/empty states), and navigate to the PDP when a
+  product is selected.
+* **`ProductAdapter`**: `onBindViewHolder`, binding the data into the Product Card, and
+  loading the image with Coil.
+* **`ProductSortCompose`**: sort selection UI (e.g. a `ModalBottomSheet`) with the 4
+  options defined in `SortOption`, invoking `onSortSelected`.
+* **`ProductDetailViewModel`**: obtain the `productId` received via Navigation
+  Component, fetch the product detail, and expose the UI state (loading / success / error).
+* **`ProductDetailFragment`**: observe the ViewModel state and render the PDP UI
+  (image, title, rating, price, description), plus resolve the `BACK TO PRODUCTS`
+  navigation back to the PLP.
 
-### Ordenamientos requeridos
+### Required sort options
 
-Definidos en `ui/components/SortOption.kt`:
+Defined in `ui/components/SortOption.kt`:
 
-* Precio: menor a mayor
-* Precio: mayor a menor
-* Rating: menor a mayor
-* Rating: mayor a menor
+* Price: low to high
+* Price: high to low
+* Rating: low to high
+* Rating: high to low
 
-## Cómo encontrar todo lo pendiente
+## How to find everything that's pending
 
-Todos los puntos que debes resolver están marcados en el código con:
+Every point you need to solve is marked in the code with:
 
 ```
 // TODO Candidate
 ```
 
-Puedes buscar ese texto en Android Studio (`Find in Files`, `Cmd/Ctrl + Shift + F`) para
-ver la lista completa de tareas.
+You can search for that text in Android Studio (`Find in Files`, `Cmd/Ctrl + Shift + F`)
+to see the full list of tasks.
 
-## Qué se evalúa
+## What's evaluated
 
-* Arquitectura MVVM y manejo de estados.
-* Consumo del API desde la arquitectura definida.
-* Renderizado de productos en el RecyclerView / Product Cards.
-* Ordenamiento funcional.
-* Integración de Jetpack Compose dentro de una pantalla con Views tradicionales.
-* Navegación PLP → PDP y vuelta.
-* Manejo de errores.
-* Calidad de código y reutilización.
+* MVVM architecture and state management.
+* API consumption from the defined architecture.
+* Rendering products in the RecyclerView / Product Cards.
+* Functional sorting.
+* Jetpack Compose integration inside a traditional Views screen.
+* PLP → PDP navigation and back.
+* Error handling.
+* Code quality and reusability.

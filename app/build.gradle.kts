@@ -76,4 +76,9 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+
+    // TODO (optional): Dependency injection (Hilt) is intentionally NOT included in this
+    // starter project, to keep the setup simple and let you focus on the PLP -> PDP flow.
+    // If you want to introduce DI, activity-compose or navigation-compose, add the
+    // corresponding plugin/version/library entries yourself (gradle/libs.versions.toml).
 }
