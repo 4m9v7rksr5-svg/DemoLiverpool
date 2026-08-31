@@ -24,12 +24,11 @@ functional part:
 * `MainActivity`, already hosting the `NavHostFragment`.
 * Navigation Component configured, with the `PLP → PDP` graph and the `productId`
   argument already declared.
-* `ProductListFragment` and `ProductDetailFragment` created, with their base XML.
-* `RecyclerView` added to the PLP layout, with `item_product.xml` as the Product Card.
-* `ComposeView` integrated into the PLP (Compose inside a traditional Views screen).
-* `ProductAdapter` and the `ViewModel`s created as skeletons.
-* `ProductRepository` created as a skeleton.
-* Basic placeholders/icons (back, sort, cart, product image).
+* `ProductListFragment` and `ProductDetailFragment` created, with a minimal placeholder
+  XML each (a centered "Hello PLP" / "Hello PDP" text) — you build the actual UI.
+* `ProductSortCompose` and `SortOption` created as a starting point for the sort
+  control, but not yet hosted anywhere.
+* The `ViewModel`s and `ProductRepository` created as skeletons.
 
 You don't need to touch Gradle, add dependencies, configure Retrofit, Navigation, or
 create the project structure: all of that is already in place.
@@ -40,11 +39,10 @@ You need to complete the functional logic in the following files:
 
 * `repository/ProductRepository.kt`
 * `ui/plp/ProductListViewModel.kt`
-* `ui/plp/ProductListFragment.kt`
-* `ui/plp/adapter/ProductAdapter.kt`
+* `ui/plp/ProductListFragment.kt` and its layout, `res/layout/fragment_product_list.xml`
 * `ui/components/ProductSortCompose.kt`
 * `ui/pdp/ProductDetailViewModel.kt`
-* `ui/pdp/ProductDetailFragment.kt`
+* `ui/pdp/ProductDetailFragment.kt` and its layout, `res/layout/fragment_product_detail.xml`
 
 ### What you're expected to implement
 
@@ -53,18 +51,18 @@ You need to complete the functional logic in the following files:
 * **`ProductListViewModel`**: load products, expose a UI state
   (loading / success / empty / error, e.g. with `StateFlow`), and apply the
   selected sort order.
-* **`ProductListFragment`**: observe the ViewModel state and reflect it in the UI
-  (RecyclerView, ProgressBar, error/empty states), and navigate to the PDP when a
-  product is selected.
-* **`ProductAdapter`**: `onBindViewHolder`, binding the data into the Product Card, and
-  loading the image with Coil.
+* **`ProductListFragment`** (and its layout): build the PLP UI — a sort control (host
+  `ProductSortCompose` in a `ComposeView`), a `RecyclerView` with a Product Card you
+  design, and loading/error/empty states — observe the ViewModel state and reflect it
+  in the UI, and navigate to the PDP when a product is selected.
 * **`ProductSortCompose`**: sort selection UI (e.g. a `ModalBottomSheet`) with the 4
   options defined in `SortOption`, invoking `onSortSelected`.
 * **`ProductDetailViewModel`**: obtain the `productId` received via Navigation
   Component, fetch the product detail, and expose the UI state (loading / success / error).
-* **`ProductDetailFragment`**: observe the ViewModel state and render the PDP UI
-  (image, title, rating, price, description), plus resolve the `BACK TO PRODUCTS`
-  navigation back to the PLP.
+* **`ProductDetailFragment`** (and its layout): build the PDP UI — image, title,
+  rating, price, description, an `ADD TO CART` (dummy) button and a
+  `BACK TO PRODUCTS` button — observe the ViewModel state and render it, and resolve
+  the `BACK TO PRODUCTS` navigation back to the PLP.
 
 ### Required sort options
 

@@ -7,7 +7,7 @@
     <fragment
         android:id="@+id/productListFragment"
         android:name="com.example.mobiletechnicaltest.ui.plp.ProductListFragment"
-        android:label="@string/plp_title"
+        android:label="@string/hello_plp"
         tools:layout="@layout/fragment_product_list"
         xmlns:tools="http://schemas.android.com/tools">
 
@@ -19,7 +19,7 @@
     <fragment
         android:id="@+id/productDetailFragment"
         android:name="com.example.mobiletechnicaltest.ui.pdp.ProductDetailFragment"
-        android:label="@string/pdp_title"
+        android:label="@string/hello_pdp"
         tools:layout="@layout/fragment_product_detail"
         xmlns:tools="http://schemas.android.com/tools">
 

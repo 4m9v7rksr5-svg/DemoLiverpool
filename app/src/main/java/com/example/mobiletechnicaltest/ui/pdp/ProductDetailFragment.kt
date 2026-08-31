@@ -31,16 +31,11 @@ class ProductDetailFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.addToCartButton.setOnClickListener {
-            // TODO Candidate: dummy "add to cart" action (no cart/persistence required)
-        }
-
-        binding.backToProductsButton.setOnClickListener {
-            // TODO Candidate: navigate back to the PLP (e.g. findNavController().navigateUp())
-        }
-
-        // TODO Candidate: collect the ViewModel UI state and bind image/title/price/rating/description
-        // TODO Candidate: handle loading and error states (progressBar / errorText)
+        // TODO Candidate: build the PDP screen here.
+        // TODO Candidate: - add views for image, title, rating, price, description
+        // TODO Candidate: - add ADD TO CART (dummy) and BACK TO PRODUCTS buttons
+        // TODO Candidate: - collect ProductDetailViewModel state and render loading/success/error
+        // TODO Candidate: - BACK TO PRODUCTS should navigate back to the PLP
     }
 
     override fun onDestroyView() {
