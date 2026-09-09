@@ -1,5 +1,6 @@
 package com.example.mobiletechnicaltest.repository
 
+import android.util.Log
 import com.example.mobiletechnicaltest.data.remote.FakeStoreApi
 import com.example.mobiletechnicaltest.domain.model.Product
 
@@ -14,7 +15,8 @@ class ProductRepository(
 ) {
 
     suspend fun getProducts(): List<Product> {
-        // TODO Candidate implementation
+        api.getProducts().onSuccess {
+       Log.i("ProductRepository", "getProducts + ")
         return emptyList()
     }
 
@@ -23,3 +25,8 @@ class ProductRepository(
         return null
     }
 }
+
+data class getProducts(
+    val products: List<Product>
+)
+
