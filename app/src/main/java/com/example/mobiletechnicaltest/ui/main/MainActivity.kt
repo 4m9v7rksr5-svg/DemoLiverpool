@@ -16,7 +16,9 @@ import androidx.navigation.navArgument
 import com.example.mobiletechnicaltest.databinding.ActivityMainBinding
 import com.example.mobiletechnicaltest.ui.components.ProductDetailCompose
 import com.example.mobiletechnicaltest.ui.components.ProductSortCompose
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
 //    private lateinit var binding: ActivityMainBinding
@@ -48,27 +50,9 @@ fun NavigationRoute(
             }
         }
 
-        composable("Detail",
-        )
+        composable("Detail")
         {
             ProductDetailCompose(0)
         }
     }
-}
-
-
-interface products{
-    fun onProductClicked()
-    fun ProductLoaded()
-}
-
-class productsImp : products{
-    override fun onProductClicked() {
-        TODO("Not yet implemented")
-    }
-
-    override fun ProductLoaded() {
-        TODO("Not yet implemented")
-    }
-
 }

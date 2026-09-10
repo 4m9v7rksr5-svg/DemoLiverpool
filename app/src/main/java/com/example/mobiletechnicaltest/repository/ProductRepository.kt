@@ -1,32 +1,11 @@
 package com.example.mobiletechnicaltest.repository
 
-import android.util.Log
-import com.example.mobiletechnicaltest.data.remote.FakeStoreApi
 import com.example.mobiletechnicaltest.domain.model.Product
 
 /**
  * Exposes product data to the ViewModels.
- *
- * // TODO Candidate: call [api], map the response DTOs into [Product],
- * // TODO Candidate: and handle network/parsing errors as you see fit.
  */
-class ProductRepository(
-    private val api: FakeStoreApi
-) {
-
-    suspend fun getProducts(): List<Product> {
-        api.getProducts().onSuccess {
-       Log.i("ProductRepository", "getProducts + ")
-        return emptyList()
-    }
-
-    suspend fun getProduct(id: Int): Product? {
-        // TODO Candidate implementation
-        return null
-    }
+interface ProductRepository {
+    suspend fun getProducts(): List<Product>
+    suspend fun getProduct(id: Int): Product?
 }
-
-data class getProducts(
-    val products: List<Product>
-)
-

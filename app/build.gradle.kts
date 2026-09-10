@@ -31,11 +31,11 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_21
-        targetCompatibility = JavaVersion.VERSION_21
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
     kotlin {
-        jvmToolchain(21)
+        jvmToolchain(17)
     }
     buildFeatures {
         viewBinding = true
@@ -76,7 +76,8 @@ dependencies {
     implementation(libs.androidx.navigation.compose)
 
 
-    implementation(libs.coil)
+    // Coil
+    implementation(libs.coil.compose)
 
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.compose.ui)
