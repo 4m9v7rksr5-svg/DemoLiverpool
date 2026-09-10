@@ -8,6 +8,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import com.example.mobiletechnicaltest.ui.components.SortOption
 import javax.inject.Inject
 
 @HiltViewModel
@@ -22,6 +23,19 @@ class ProductListViewModel @Inject constructor(
         getProducts()
     }
 
+    fun sort(option: SortOption) {
+        val currentState = _uiState.value
+        if (currentState is ProductListUiState.Success) {
+            val sortedList = when (option) {
+                SortOption.PRICE_ASC -> currentState.products.sortedBy { it.price }
+                SortOption.PRICE_DESC -> currentState.products.sortedByDescending { it.price }
+                SortOption.RATING_ASC -> currentState.products.sortedBy { it.rating }
+                SortOption.RATING_DESC -> currentState.products.sortedByDescending { it.rating }
+            }
+            _uiState.value = ProductListUiState.Success(sortedList)
+        }
+    }
+
     private fun getProducts() {
         viewModelScope.launch {
             _uiState.value = ProductListUiState.Loading
@@ -33,7 +47,7 @@ class ProductListViewModel @Inject constructor(
                     _uiState.value = ProductListUiState.Success(products)
                 }
             } catch (e: Exception) {
-                _uiState.value = ProductListUiState.Error("Failed to load products: ${e.message}")
+                _uiState.value = ProductListUiState.Error("Error al cargar los productos: ${e.message}")
             }
         }
     }

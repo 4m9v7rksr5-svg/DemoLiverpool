@@ -8,12 +8,9 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
-import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import androidx.navigation.navArgument
-import com.example.mobiletechnicaltest.databinding.ActivityMainBinding
 import com.example.mobiletechnicaltest.ui.components.ProductDetailCompose
 import com.example.mobiletechnicaltest.ui.components.ProductSortCompose
 import dagger.hilt.android.AndroidEntryPoint
@@ -46,7 +43,9 @@ fun NavigationRoute(
 ) {
     NavHost(navController = navController, startDestination = "Products") {
         composable("Products") {
-            ProductSortCompose(modifier, {}) { navController.navigate("Detail" )
+            ProductSortCompose(modifier)
+            {
+                navController.navigate("Detail" )
             }
         }
 
