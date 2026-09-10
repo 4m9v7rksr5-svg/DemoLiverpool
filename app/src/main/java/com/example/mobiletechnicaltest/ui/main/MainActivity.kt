@@ -1,8 +1,8 @@
 package com.example.mobiletechnicaltest.ui.main
 
 import android.os.Bundle
+import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
@@ -18,22 +18,19 @@ import com.example.mobiletechnicaltest.ui.components.ProductSortCompose
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class MainActivity : AppCompatActivity() {
-
-//    private lateinit var binding: ActivityMainBinding
+class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             val navController = rememberNavController()
             Scaffold { innerPadding ->
-            NavigationRoute(modifier = Modifier.padding(innerPadding),navController = navController)
+                NavigationRoute(
+                    modifier = Modifier.padding(innerPadding),
+                    navController = navController
+                )
+            }
         }
-
-        }
-
-  //      binding = ActivityMainBinding.inflate(layoutInflater)
-  //      setContentView(binding.root)
     }
 }
 
