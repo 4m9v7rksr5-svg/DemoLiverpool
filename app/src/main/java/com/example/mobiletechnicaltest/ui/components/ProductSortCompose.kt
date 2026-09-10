@@ -22,6 +22,7 @@ import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -36,6 +37,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
+import com.example.mobiletechnicaltest.domain.model.Product
+import com.example.mobiletechnicaltest.ui.pdp.ProductDetailState
+import com.example.mobiletechnicaltest.ui.pdp.ProductDetailViewModel
 import com.example.mobiletechnicaltest.ui.plp.ProductListUiState
 import com.example.mobiletechnicaltest.ui.plp.ProductListViewModel
 
@@ -81,53 +85,9 @@ fun ProductSortCompose(
                         columns = GridCells.Fixed(2)
                     ) {
                         items(products) { product ->
-                            Card(
-                                modifier = Modifier
-                                    .padding(8.dp)
-                                    .fillMaxWidth()
-                                    .clickable { onCardSelected(product.id.toString()) }
-                            ) {
-                                Column(modifier = Modifier.padding(8.dp)) {
-                                    AsyncImage(
-                                        model = product.imageUrl,
-                                        contentDescription = product.title,
-                                        modifier = Modifier
-                                            .fillMaxWidth()
-                                            .height(120.dp),
-                                        contentScale = ContentScale.Fit
-                                    )
-
-                                    Text(
-                                        text = product.title,
-                                        style = MaterialTheme.typography.bodyMedium,
-                                        fontWeight = FontWeight.Bold,
-                                        maxLines = 2,
-                                        overflow = TextOverflow.Ellipsis,
-                                        modifier = Modifier.padding(top = 8.dp)
-                                    )
-
-                                    Row(
-                                        modifier = Modifier.padding(top = 4.dp),
-                                        verticalAlignment = Alignment.CenterVertically
-                                    ) {
-                                        StarRating(rating = product.rating)
-                                        Text(
-                                            text = "(${product.ratingCount})",
-                                            style = MaterialTheme.typography.bodySmall,
-                                            modifier = Modifier.padding(start = 4.dp)
-                                        )
-                                    }
-
-                                    Text(
-                                        text = "$${product.price}",
-                                        style = MaterialTheme.typography.bodyLarge,
-                                        color = MaterialTheme.colorScheme.primary,
-                                        modifier = Modifier.padding(top = 4.dp)
-                                    )
-                                }
-                            }
+                          ProductItem(onCardSelected = onCardSelected, product = product,false,modifier)
                         }
-                    }
+                        }
 
                     Button(
                         modifier = Modifier
@@ -135,7 +95,7 @@ fun ProductSortCompose(
                             .padding(16.dp),
                         onClick = { showBottomSheet = true }
                     ) {
-                        Text(text = "Opciones de ordenado")
+                        Text(text = "Ordenar por...")
                     }
                 }
             }
@@ -146,7 +106,6 @@ fun ProductSortCompose(
                 onDismissRequest = { showBottomSheet = false },
                 sheetState = sheetState
             ) {
-                // Contenido del BottomSheet
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -175,17 +134,108 @@ fun ProductSortCompose(
 }
 
 @Composable
-fun ProductDetailCompose(idProduct: Int) {
-    Card(modifier = Modifier.padding(16.dp)) {
-        Column(modifier = Modifier.padding(16.dp)) {
-            Text(
-                text = "Detalles del producto ID: $idProduct",
-                style = MaterialTheme.typography.headlineSmall
+fun ProductItem(onCardSelected: (route: String) -> Unit, product: Product,isDetail: Boolean = false,modifier: Modifier) {
+    Column(modifier = modifier.padding(8.dp)) {
+        Card(
+            modifier = modifier
+                .padding(8.dp)
+                .fillMaxWidth()
+                .clickable { onCardSelected(product.id.toString()) }
+        ) {
+            AsyncImage(
+                model = product.imageUrl,
+                contentDescription = product.title,
+                modifier = modifier
+                    .fillMaxWidth()
+                    .height(120.dp),
+                contentScale = ContentScale.Fit
             )
+        }
+
+
+        Text(
+            text = product.title,
+            style = MaterialTheme.typography.bodyMedium,
+            fontWeight = FontWeight.Bold,
+            maxLines = 2,
+            overflow = TextOverflow.Ellipsis,
+            modifier = modifier.padding(top = 8.dp)
+        )
+
+        Row(
+            modifier = modifier.padding(top = 4.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            StarRating(rating = product.rating)
             Text(
-                text = "Esta es una vista previa simplificada del detalle.",
-                modifier = Modifier.padding(top = 8.dp)
+                text = "(${product.ratingCount})",
+                style = MaterialTheme.typography.bodySmall,
+                modifier = modifier.padding(start = 4.dp)
             )
+        }
+
+        Text(
+            text = "$${product.price}",
+            style = MaterialTheme.typography.bodyLarge,
+            color = MaterialTheme.colorScheme.primary,
+            modifier = modifier.padding(top = 4.dp)
+        )
+        if (isDetail)
+            Text(
+                text = product.description,
+                style = MaterialTheme.typography.bodyMedium,
+                modifier = modifier.padding(top = 8.dp)
+            )
+    }
+}
+
+
+
+@Composable
+fun ProductDetailCompose(idProduct: Int,modifier: Modifier,onBack: () -> Unit ) {
+    val viewModel: ProductDetailViewModel = hiltViewModel()
+    val uiState by viewModel.state.collectAsState()
+
+    LaunchedEffect(idProduct) {
+        viewModel.loadProduct(idProduct)
+    }
+
+    Box(modifier = modifier.fillMaxSize()) {
+        when (uiState) {
+            is ProductDetailState.Loading -> {
+                CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+            }
+
+            is ProductDetailState.Error -> {
+                Text(
+                    text = (uiState as ProductDetailState.Error).message,
+                    modifier = Modifier.align(Alignment.Center)
+                )
+            }
+
+            is ProductDetailState.Success -> {
+                val product = (uiState as ProductDetailState.Success).product
+                Column(modifier = Modifier.fillMaxSize()) {
+                    ProductItem({}, product,true,modifier)
+                    Button(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(16.dp),
+                        onClick = {  }
+                    ) {
+                        Text(text = "Añadir al carrito")
+                    }
+                    Button(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 16.dp),
+                        onClick = {  onBack.invoke() }
+                    ) {
+                        Text(text = "Regresar a productos")
+                    }
+                }
+
+            }
         }
     }
 }

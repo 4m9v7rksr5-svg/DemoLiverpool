@@ -8,9 +8,11 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.example.mobiletechnicaltest.ui.components.ProductDetailCompose
 import com.example.mobiletechnicaltest.ui.components.ProductSortCompose
 import dagger.hilt.android.AndroidEntryPoint
@@ -45,13 +47,15 @@ fun NavigationRoute(
         composable("Products") {
             ProductSortCompose(modifier)
             {
-                navController.navigate("Detail" )
+                navController.navigate("Detail/${it}")
             }
         }
 
-        composable("Detail")
-        {
-            ProductDetailCompose(0)
+        composable("Detail/{id}",
+            arguments = listOf(navArgument("id") { type = NavType.IntType }))
+        {  backStackEntry ->
+            val id = backStackEntry.arguments?.getInt("id") ?: 0
+            ProductDetailCompose(id,modifier,onBack = {navController.popBackStack()})
         }
     }
 }

@@ -1,6 +1,5 @@
 package com.example.mobiletechnicaltest.ui.pdp
 
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.mobiletechnicaltest.domain.model.Product
@@ -20,23 +19,14 @@ sealed class ProductDetailState {
 
 @HiltViewModel
 class ProductDetailViewModel @Inject constructor(
-    private val savedStateHandle: SavedStateHandle,
     private val repository: ProductRepository
 ) : ViewModel() {
 
     private val _state = MutableStateFlow<ProductDetailState>(ProductDetailState.Loading)
     val state: StateFlow<ProductDetailState> = _state.asStateFlow()
 
-    init {
-        val productId = savedStateHandle.get<Int>("productId")
-        if (productId != null) {
-            loadProduct(productId)
-        } else {
-            _state.value = ProductDetailState.Error("Product ID not found")
-        }
-    }
 
-    private fun loadProduct(id: Int) {
+     fun loadProduct(id: Int) {
         viewModelScope.launch {
             _state.value = ProductDetailState.Loading
             val product = repository.getProduct(id)
