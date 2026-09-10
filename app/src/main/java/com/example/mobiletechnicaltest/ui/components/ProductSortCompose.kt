@@ -1,6 +1,7 @@
 package com.example.mobiletechnicaltest.ui.components
 
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -11,11 +12,16 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Remove
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
@@ -25,6 +31,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -192,9 +199,37 @@ fun ProductItem(onCardSelected: (route: String) -> Unit, product: Product,isDeta
 
 
 @Composable
-fun ProductDetailCompose(idProduct: Int,modifier: Modifier,onBack: () -> Unit ) {
+fun QuantitySelector(
+    quantity: Int,
+    onQuantityChange: (Int) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Row(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(16.dp),
+        horizontalArrangement = Arrangement.Center,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        IconButton(onClick = { if (quantity > 1) onQuantityChange(quantity - 1) }) {
+            Icon(Icons.Default.Remove, contentDescription = "Restar")
+        }
+        Text(
+            text = quantity.toString(),
+            style = MaterialTheme.typography.headlineSmall,
+            modifier = Modifier.padding(horizontal = 24.dp)
+        )
+        IconButton(onClick = { onQuantityChange(quantity + 1) }) {
+            Icon(Icons.Default.Add, contentDescription = "Sumar")
+        }
+    }
+}
+
+@Composable
+fun ProductDetailCompose(idProduct: Int, modifier: Modifier, onBack: () -> Unit) {
     val viewModel: ProductDetailViewModel = hiltViewModel()
     val uiState by viewModel.state.collectAsState()
+    var quantity by remember { mutableIntStateOf(1) }
 
     LaunchedEffect(idProduct) {
         viewModel.loadProduct(idProduct)
@@ -216,20 +251,26 @@ fun ProductDetailCompose(idProduct: Int,modifier: Modifier,onBack: () -> Unit ) 
             is ProductDetailState.Success -> {
                 val product = (uiState as ProductDetailState.Success).product
                 Column(modifier = Modifier.fillMaxSize()) {
-                    ProductItem({}, product,true,modifier)
+                    ProductItem({}, product, true, modifier)
+
+                    QuantitySelector(
+                        quantity = quantity,
+                        onQuantityChange = { quantity = it }
+                    )
+
                     Button(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(16.dp),
-                        onClick = {  }
+                            .padding(horizontal = 16.dp),
+                        onClick = { }
                     ) {
                         Text(text = "Añadir al carrito")
                     }
                     Button(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(horizontal = 16.dp),
-                        onClick = {  onBack.invoke() }
+                            .padding(16.dp),
+                        onClick = { onBack.invoke() }
                     ) {
                         Text(text = "Regresar a productos")
                     }
